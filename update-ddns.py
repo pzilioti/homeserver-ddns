@@ -36,11 +36,11 @@ def run():
         response_ddns = requests.post(ddns_endpoint, auth=(user, password), headers=headers, params=params)
 
         logging.info(response_ddns.text)
-        if(response_ddns.text == "good " + ip):
+        if(response_ddns.text == "good " + ip) or (response_ddns.text == "nochg " + ip):
             logging.info("Sucess")
             config['DEFAULT']['current_ip'] = ip
 
-            with open('/home/paolo/projects/homeserver-ddns/config.ini', 'w') as configfile:
+            with open(os.path.join(base_path, 'config.ini'), 'w') as configfile:
                 config.write(configfile)
         elif(response_ddns.text == "911"):
             logging.error("Error in endpoint, waiting 5 minutes")
